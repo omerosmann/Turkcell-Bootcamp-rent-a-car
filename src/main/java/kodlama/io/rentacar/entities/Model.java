@@ -1,6 +1,7 @@
 package kodlama.io.rentacar.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,9 +22,9 @@ public class Model {
     private int id;
     private String name;
     @ManyToOne
-    //@JsonManagedReference
+    @JsonManagedReference
     private Brand brand;
     @OneToMany(mappedBy = "model")
-    //@JsonManagedReference
+    @JsonManagedReference
     private List<Car> cars;
 }
