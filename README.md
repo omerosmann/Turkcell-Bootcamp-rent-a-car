@@ -2,8 +2,7 @@
 
 ![image](https://user-images.githubusercontent.com/113211889/228918328-cb0eb5e4-368d-416f-a8d4-037d76051bbc.png)
 
-## <dependencies>
-   <dependencies> 
+## <dependencies> 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -48,5 +47,5 @@
             <version>3.1.1</version>
         </dependency>
 
-    </dependencies>
+    
 
