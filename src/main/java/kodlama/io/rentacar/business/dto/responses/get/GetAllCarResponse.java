@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAllCarResponse {
+public class GetAllCarsResponse {
     private int id;
     private int modelYear;
     private String plate;
