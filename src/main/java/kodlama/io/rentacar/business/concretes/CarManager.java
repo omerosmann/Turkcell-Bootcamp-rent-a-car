@@ -8,6 +8,7 @@ import kodlama.io.rentacar.business.dto.responses.get.GetAllCarsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetCarResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateCarResponse;
 import kodlama.io.rentacar.entities.Car;
+import kodlama.io.rentacar.entities.enums.State;
 import kodlama.io.rentacar.repository.CarRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,9 +24,11 @@ public class CarManager implements CarService {
 
     @Override
     public List<GetAllCarsResponse> getAll() {
-        List<Car> car = repository.findAll();
-        List<GetAllCarsResponse> response = car.stream()
-                .map(model -> mapper.map(car, GetAllCarsResponse.class)).toList();
+        List<Car> cars = repository.findAll();
+        List<GetAllCarsResponse> response = cars
+                .stream().filter((car)-> !car.getState().equals(State.MAINTANCE))
+                .map(car -> mapper.map(car,GetAllCarsResponse.class))
+                .toList();
 
         return response;
     }
@@ -44,8 +47,8 @@ public class CarManager implements CarService {
     public CreateCarResponse add(CreateCarRequest request) {
         Car car = mapper.map(request,Car.class);
         car.setId(0);
-        repository.save(car);
-        CreateCarResponse response = mapper.map(car, CreateCarResponse.class);
+        Car carManager = repository.save(car);
+        CreateCarResponse response = mapper.map(carManager, CreateCarResponse.class);
 
         return response;
     }
@@ -53,10 +56,12 @@ public class CarManager implements CarService {
     @Override
     public UpdateCarResponse update(int id, UpdateCarRequest request) {
         checkIfBrandExists(id);
-
+        Car car2 = repository.findById(id).orElseThrow();
         Car car = mapper.map(request,Car.class);
+        checkIfCarState(car2.getState(),request.getState());
         car.setId(id);
         repository.save(car);
+
         UpdateCarResponse updateCarResponse = mapper.map(car,UpdateCarResponse.class);
 
         return updateCarResponse;
@@ -72,4 +77,10 @@ public class CarManager implements CarService {
     private void checkIfBrandExists(int id) {
         if (!repository.existsById(id)) throw new RuntimeException("No such a brand!");
     }
+
+    private void checkIfCarState(State state,State state2){
+        if(state.equals(State.MAINTANCE) && state2.equals(State.MAINTANCE))throw  new RuntimeException("Bakımdaki ürün bakıma gönderilemez");
+        else if(state.equals(State.RENTED) && state2.equals(State.MAINTANCE))throw new RuntimeException("Kirada olan araba bakıma gidemez.");
+    }
+
 }

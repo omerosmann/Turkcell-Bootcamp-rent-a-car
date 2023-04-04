@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -22,9 +24,14 @@ public class Car {
     private int modelYear;
     private String plate;
     private double dailyPrice;
+
     @Enumerated(EnumType.STRING)
     private State state;
+
     @ManyToOne
     @JsonManagedReference
     private Model model;
+
+    @OneToMany(mappedBy = "car")
+    private List<CarMaintenance> carMaintenances;
 }
