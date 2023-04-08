@@ -24,25 +24,26 @@ public class ModelManager implements ModelService {
     @Override
     public List<GetAllModelsResponse> getAll() {
         List<Model> models = repository.findAll();
-        List<GetAllModelsResponse> response = models.stream()
-                .map(model -> mapper.map(model, GetAllModelsResponse.class)).toList();
+        List<GetAllModelsResponse> response = models
+                .stream()
+                .map(model -> mapper.map(model, GetAllModelsResponse.class))
+                .toList();
 
         return response;
     }
 
     @Override
     public GetModelResponse getById(int id) {
-        checkIfBrandExists(id);
-
+        checkIfModelExists(id);
         Model model = repository.findById(id).orElseThrow();
-        GetModelResponse response = mapper.map(model,GetModelResponse.class);
+        GetModelResponse response = mapper.map(model, GetModelResponse.class);
 
         return response;
     }
 
     @Override
     public CreateModelResponse add(CreateModelRequest request) {
-        Model model = mapper.map(request,Model.class);
+        Model model = mapper.map(request, Model.class);
         model.setId(0);
         repository.save(model);
         CreateModelResponse response = mapper.map(model, CreateModelResponse.class);
@@ -52,23 +53,24 @@ public class ModelManager implements ModelService {
 
     @Override
     public UpdateModelResponse update(int id, UpdateModelRequest request) {
-        checkIfBrandExists(id);
-
-        Model model = mapper.map(request,Model.class);
+        checkIfModelExists(id);
+        Model model = mapper.map(request, Model.class);
         model.setId(id);
         repository.save(model);
-        UpdateModelResponse updateModelResponse = mapper.map(model, UpdateModelResponse.class);
+        UpdateModelResponse response = mapper.map(model, UpdateModelResponse.class);
 
-        return updateModelResponse;
+        return response;
     }
 
     @Override
     public void delete(int id) {
-        checkIfBrandExists(id);
+        checkIfModelExists(id);
         repository.deleteById(id);
     }
 
-    private void checkIfBrandExists(int id) {
-        if (!repository.existsById(id)) throw new RuntimeException("No such a brand!");
+    private void checkIfModelExists(int id) {
+        if(!repository.existsById(id)){
+            throw new RuntimeException("Böyle bir model bulunamadı!");
+        }
     }
 }

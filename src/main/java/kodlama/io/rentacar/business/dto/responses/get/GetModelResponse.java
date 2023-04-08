@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class GetModelResponse {
     private int id;
+    private int brandId;
     private String name;
-    private String brandName;
-
 }

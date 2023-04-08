@@ -14,18 +14,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class BrandManager implements BrandService {
-    private  final BrandRepository repository;
+    private final BrandRepository repository;
     private final ModelMapper mapper;
-
 
     @Override
     public List<GetAllBrandsResponse> getAll() {
         List<Brand> brands = repository.findAll();
-        List<GetAllBrandsResponse> response = brands.stream()
-                .map(brand -> mapper.map(brand, GetAllBrandsResponse.class)).toList();
+        List<GetAllBrandsResponse> response = brands
+                .stream()
+                .map(brand -> mapper.map(brand, GetAllBrandsResponse.class))
+                .toList();
 
         return response;
     }
@@ -33,9 +35,8 @@ public class BrandManager implements BrandService {
     @Override
     public GetBrandResponse getById(int id) {
         checkIfBrandExists(id);
-
         Brand brand = repository.findById(id).orElseThrow();
-        GetBrandResponse response = mapper.map(brand,GetBrandResponse.class);
+        GetBrandResponse response = mapper.map(brand, GetBrandResponse.class);
 
         return response;
     }
@@ -62,13 +63,12 @@ public class BrandManager implements BrandService {
     @Override
     public UpdateBrandResponse update(int id, UpdateBrandRequest request) {
         checkIfBrandExists(id);
-
         Brand brand = mapper.map(request, Brand.class);
         brand.setId(id);
         repository.save(brand);
-        UpdateBrandResponse updateBrandResponse = mapper.map(brand, UpdateBrandResponse.class);
+        UpdateBrandResponse response = mapper.map(brand, UpdateBrandResponse.class);
 
-        return updateBrandResponse;
+        return response;
     }
 
     @Override
@@ -77,8 +77,8 @@ public class BrandManager implements BrandService {
         repository.deleteById(id);
     }
 
+    // Business rules
     private void checkIfBrandExists(int id) {
-        if (!repository.existsById(id)) throw new RuntimeException("No such a brand!");
+        if (!repository.existsById(id)) throw new RuntimeException("Marka bulunamadı!");
     }
-
 }

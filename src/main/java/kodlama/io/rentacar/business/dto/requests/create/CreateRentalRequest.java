@@ -9,7 +9,10 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateModelRequest {
-    private int brandId;
-    private String name;
+public class CreateRentalRequest {
+    private int carId;
+    private double dailyPrice;
+    private int rentedForDays;
 }
+
+

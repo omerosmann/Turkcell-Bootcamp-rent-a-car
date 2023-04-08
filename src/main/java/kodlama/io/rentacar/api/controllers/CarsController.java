@@ -1,6 +1,5 @@
 package kodlama.io.rentacar.api.controllers;
 
-
 import kodlama.io.rentacar.business.abstracts.CarService;
 import kodlama.io.rentacar.business.dto.requests.create.CreateCarRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateCarRequest;
@@ -15,35 +14,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cars")
 @AllArgsConstructor
+@RequestMapping("/api/cars")
 public class CarsController {
     private final CarService service;
 
     @GetMapping
-    public List<GetAllCarsResponse> getAll(){
-        return service.getAll();
+    public List<GetAllCarsResponse> getAll(@RequestParam(defaultValue = "true") boolean includeMaintenance) {
+        return service.getAll(includeMaintenance);
     }
 
     @GetMapping("/{id}")
-    public GetCarResponse getById(@PathVariable int id){
+    public GetCarResponse getById(@PathVariable int id) {
         return service.getById(id);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateCarResponse add(@RequestBody CreateCarRequest request){
+    public CreateCarResponse add(@RequestBody CreateCarRequest request) {
         return service.add(request);
     }
 
     @PutMapping("/{id}")
-    public UpdateCarResponse update(@PathVariable int id, @RequestBody UpdateCarRequest request){
-        return service.update(id,request);
+    public UpdateCarResponse update(@PathVariable int id, @RequestBody UpdateCarRequest request) {
+        return service.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable int id) {
         service.delete(id);
     }
+
 }

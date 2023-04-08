@@ -1,6 +1,5 @@
 package kodlama.io.rentacar.api.controllers;
 
-
 import kodlama.io.rentacar.business.abstracts.ModelService;
 import kodlama.io.rentacar.business.dto.requests.create.CreateModelRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateModelRequest;
@@ -15,10 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/models")
 @AllArgsConstructor
+@RequestMapping("/api/models")
 public class ModelsController {
-
     private final ModelService service;
 
     @GetMapping
@@ -44,23 +42,8 @@ public class ModelsController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable int id) {
         service.delete(id);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
