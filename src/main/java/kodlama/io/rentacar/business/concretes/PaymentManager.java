@@ -8,6 +8,7 @@ import kodlama.io.rentacar.business.dto.responses.create.CreatePaymentResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetAllPaymentsResponse;
 import kodlama.io.rentacar.business.dto.responses.get.GetPaymentResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdatePaymentResponse;
+import kodlama.io.rentacar.business.rules.PaymentBusinessRules;
 import kodlama.io.rentacar.common.dto.CreateRentalPaymentRequest;
 import kodlama.io.rentacar.entities.Payment;
 import kodlama.io.rentacar.repository.PaymentRepository;
@@ -20,22 +21,26 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PaymentManager implements PaymentService {
-    private final PaymentRepository paymentRepository;
+    private final PaymentRepository repository;
     private final ModelMapper mapper;
     private final PosService posService;
+    private final PaymentBusinessRules rules;
 
     @Override
     public List<GetAllPaymentsResponse> getAll() {
-        List<Payment> payments = paymentRepository.findAll();
-        List<GetAllPaymentsResponse> response = payments.stream()
-                .map(payment -> mapper.map(payment, GetAllPaymentsResponse.class)).toList();
+        List<Payment> payments = repository.findAll();
+        List<GetAllPaymentsResponse> response = payments
+                .stream()
+                .map(payment -> mapper.map(payment, GetAllPaymentsResponse.class))
+                .toList();
+
         return response;
     }
 
     @Override
     public GetPaymentResponse getById(int id) {
-        checkIfPaymentExists(id);
-        Payment payment = paymentRepository.findById(id).orElseThrow();
+        rules.checkIfPaymentExists(id);
+        Payment payment = repository.findById(id).orElseThrow();
         GetPaymentResponse response = mapper.map(payment, GetPaymentResponse.class);
 
         return response;
@@ -43,10 +48,10 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public CreatePaymentResponse add(CreatePaymentRequest request) {
-        checkIfCardExists(request.getCardNumber());
+        rules.checkIfCardExists(request.getCardNumber());
         Payment payment = mapper.map(request, Payment.class);
         payment.setId(0);
-        paymentRepository.save(payment);
+        repository.save(payment);
         CreatePaymentResponse response = mapper.map(payment, CreatePaymentResponse.class);
 
         return response;
@@ -54,10 +59,10 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public UpdatePaymentResponse update(int id, UpdatePaymentRequest request) {
-        checkIfPaymentExists(id);
+        rules.checkIfPaymentExists(id);
         Payment payment = mapper.map(request, Payment.class);
         payment.setId(id);
-        paymentRepository.save(payment);
+        repository.save(payment);
         UpdatePaymentResponse response = mapper.map(payment, UpdatePaymentResponse.class);
 
         return response;
@@ -65,49 +70,17 @@ public class PaymentManager implements PaymentService {
 
     @Override
     public void delete(int id) {
-        checkIfPaymentExists(id);
-        paymentRepository.deleteById(id);
+        rules.checkIfPaymentExists(id);
+        repository.deleteById(id);
     }
 
     @Override
     public void processRentalPayment(CreateRentalPaymentRequest request) {
-        checkIfPaymentIsValid(request);
-        Payment payment = paymentRepository.findByCardNumber(request.getCardNumber());
-        checkIfBalanceIdEnough(payment.getBalence(), request.getPrice());
+        rules.checkIfPaymentIsValid(request);
+        Payment payment = repository.findByCardNumber(request.getCardNumber());
+        rules.checkIfBalanceIdEnough(payment.getBalance(), request.getPrice());
         posService.pay(); // fake pos service
-        payment.setBalence(payment.getBalence() - request.getPrice());
-        paymentRepository.save(payment);
-
+        payment.setBalance(payment.getBalance() - request.getPrice());
+        repository.save(payment);
     }
-
-    private void checkIfPaymentExists(int id){
-        if(!paymentRepository.existsById(id)){
-            throw new RuntimeException("Ödeme bilgisi bulunamadı");
-        }
-    }
-
-    private void checkIfBalanceIdEnough(double balance, double price){
-        if (balance < price){
-            throw new RuntimeException("Yetersiz bakiye");
-        }
-    }
-    private void checkIfPaymentIsValid(CreateRentalPaymentRequest request){
-        if(!paymentRepository.existsByCardNumberAndCardHolderAndCarExpirationYearAndCardExpirationMonthAndCardCvv(
-                request.getCardNumber(),
-                request.getCardHolder(),
-                request.getCardExpirationYear(),
-                request.getGetCardExpirationMonth(),
-                request.getCardCvv()
-        )){
-            throw  new RuntimeException("Kart bilgileriniz hatalı");
-        }
-    }
-
-    private void checkIfCardExists(String cardNumber){
-        if(paymentRepository.existsByCardNumber(cardNumber)){
-            throw new RuntimeException("Kart numarası zaten kaıtlı");
-        }
-    }
-    
-    
 }

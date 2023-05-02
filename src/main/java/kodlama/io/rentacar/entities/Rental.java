@@ -20,7 +20,7 @@ public class Rental {
     private int id;
     private double dailyPrice;
     private int rentedForDays;
-    private double totalPrice; // readonly
+    private double totalPrice;
     private LocalDateTime startDate;
 
     @ManyToOne

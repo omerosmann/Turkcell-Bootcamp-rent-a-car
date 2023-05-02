@@ -30,7 +30,7 @@ public class PaymentsController {
     }
 
     @PostMapping
-    public CreatePaymentResponse add(@Valid  @RequestBody CreatePaymentRequest request) {
+    public CreatePaymentResponse add(@Valid @RequestBody CreatePaymentRequest request) {
         return service.add(request);
     }
 

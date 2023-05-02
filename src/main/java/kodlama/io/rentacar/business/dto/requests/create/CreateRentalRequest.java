@@ -14,8 +14,6 @@ public class CreateRentalRequest {
     private int carId;
     private double dailyPrice;
     private int rentedForDays;
-    //kart bilgileri
+    // Kart bilgileri
     private PaymentRequest paymentRequest;
 }
-
-

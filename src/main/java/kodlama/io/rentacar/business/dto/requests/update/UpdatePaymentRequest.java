@@ -8,12 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePaymentRequest extends PaymentRequest {
     @NotNull
     @Min(value = 1)
-    private double balence;
+    private double balance;
 }
