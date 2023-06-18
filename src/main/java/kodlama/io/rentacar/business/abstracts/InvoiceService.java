@@ -3,8 +3,8 @@ package kodlama.io.rentacar.business.abstracts;
 import kodlama.io.rentacar.business.dto.requests.create.CreateInvoiceRequest;
 import kodlama.io.rentacar.business.dto.requests.update.UpdateInvoiceRequest;
 import kodlama.io.rentacar.business.dto.responses.create.CreateInvoiceResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetAllInvoicesResponse;
-import kodlama.io.rentacar.business.dto.responses.get.GetInvoiceResponse;
+import kodlama.io.rentacar.business.dto.responses.get.Invoice.GetAllInvoicesResponse;
+import kodlama.io.rentacar.business.dto.responses.get.Invoice.GetInvoiceResponse;
 import kodlama.io.rentacar.business.dto.responses.update.UpdateInvoiceResponse;
 
 import java.util.List;

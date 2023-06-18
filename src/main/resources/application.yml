@@ -1,0 +1,26 @@
+application-version: '1.0'
+spring:
+  mail:
+    host: smtp.gmail.com
+    username: omerr.osmnn@gmail.com
+    port: '587'
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: 'true'
+  datasource:
+    password: '12345'
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/turkcell-rentACardb
+app:
+  jwtSecret: jwtSecret
+  jwtExpirationMs: '86400000'
+
+
