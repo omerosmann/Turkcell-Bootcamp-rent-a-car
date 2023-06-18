@@ -2,7 +2,7 @@ application-version: '1.0'
 spring:
   mail:
     host: smtp.gmail.com
-    username: omerr.osmnn@gmail.com
+    username: ''
     port: '587'
     properties:
       mail:
