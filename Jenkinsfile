@@ -12,21 +12,21 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven kullanarak projeyi derleme adımları
-                sh 'mvn wrapper:wrapper'
+                sh 'mvnw wrapper:wrapper'
             }
         }
         
         stage('Test') {
             steps {
                 // Test adımları
-                sh 'mvn test'
+                sh 'mvnw test'
             }
         }
         
         stage('Deploy') {
             steps {
                 // Uygulamayı dağıtma adımları
-                sh 'mvn spring-boot:run'
+                sh 'mvnw spring-boot:run'
             }
         }
     }
