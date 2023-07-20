@@ -13,8 +13,8 @@ pipeline {
             steps {
                 // Maven kullanarak projeyi derleme adımları
                 // sh 'mvnw wrapper:wrapper'
-                sh 'cd Turkcell-Bootcamp-rent-a-car && mvn -DskipTests clean'
-                sh 'cd Turkcell-Bootcamp-rent-a-car && mvn -DskipTests compile'
+                sh 'mvn -DskipTests clean'
+                sh 'mvn -DskipTests compile'
             }
         }
         
