@@ -13,8 +13,8 @@ pipeline {
             steps {
                 // Maven kullanarak projeyi derleme adımları
                 // sh 'mvnw wrapper:wrapper'
-                sh 'mvn -DskipTests clean'
-                sh 'mvn -DskipTests compile'
+                sh 'mvnw -DskipTests clean'
+                sh 'mvnw -DskipTests compile'
             }
         }
         
