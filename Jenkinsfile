@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven kullanarak projeyi derleme adımları
-                sh './mvn wrapper:wrapper'
+                sh 'mvn wrapper:wrapper'
             }
         }
         
