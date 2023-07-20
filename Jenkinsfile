@@ -12,7 +12,9 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven kullanarak projeyi derleme adımları
-                sh 'mvnw wrapper:wrapper'
+                // sh 'mvnw wrapper:wrapper'
+                bat 'cd Turkcell-Bootcamp-rent-a-car && mvn -DskipTests clean'
+                bat 'cd Turkcell-Bootcamp-rent-a-car && mvn -DskipTests compile'
             }
         }
         
