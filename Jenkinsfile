@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+    MAVEN_ARGS=" -e clean install"
+    }
     
     stages {
         stage('Checkout') {
@@ -11,24 +14,24 @@ pipeline {
        
         stage('Build') {
             steps {
-                // Maven kullanarak projeyi derleme adımları
-                // sh 'mvnw wrapper:wrapper'
-                sh 'mvnw -DskipTests clean'
-                sh 'mvnw -DskipTests compile'
+               withMaven(maven: 'MAVEN_ENV') {
+                sh "mvn ${MAVEN_ARGS}"
+                }
             }
         }
+
         
         stage('Test') {
             steps {
                 // Test adımları
-                sh 'mvnw test'
+                sh 'mvn test'
             }
         }
         
         stage('Deploy') {
             steps {
                 // Uygulamayı dağıtma adımları
-                sh 'mvnw spring-boot:run'
+                sh 'mvn spring-boot:run'
             }
         }
     }
