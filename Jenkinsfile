@@ -12,8 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Maven kullanarak projeyi derleme adımları
-                sh 'mvn wrapper:wrapper'
-                sh './mvnw clean package'
+                sh './mvnw wrapper:wrapper'
             }
         }
         
