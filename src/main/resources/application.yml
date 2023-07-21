@@ -24,3 +24,5 @@ app:
   jwtExpirationMs: '86400000'
 
 
+server:
+  port: 8082
